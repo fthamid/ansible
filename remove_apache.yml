@@ -1,6 +1,6 @@
 ---
 
-- hosts: server2
+- hosts: server1
   become: true
   tasks:
           - name: update repository index
@@ -11,10 +11,10 @@
           - name: install apache2
             apt:
                     name: apache2
-                    state: latest
+                    state: absent
 
           - name: add php support to apache2
             apt:
                     name: libapache2-mod-php
-                    state: latest
+                    state: absent
 
