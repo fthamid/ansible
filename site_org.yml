@@ -4,6 +4,25 @@
   become: true
   tasks:
 
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install updates (CentOS)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: update repository index
+    tags: always
+    apt:
+          update_cache: yes
+
 - hosts: web_servers
   become: true
   tasks:
