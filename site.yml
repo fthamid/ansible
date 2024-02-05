@@ -1,6 +1,6 @@
 ---
 
-- hosts: server1
+- hosts: all
   become: true
   tasks:
 
@@ -13,7 +13,10 @@
     apt:
       name: 
         - apache2
-        - libapache2-mod-php
+        - php5
+        - libapache2-mod-php5
+        - php5-mcrypt
+        - php5-cli
       state: latest
     when: ansible_distribution == "Ubuntu"
 
@@ -25,6 +28,22 @@
         - php
       state: latest
     when: ansible_distribution == "CenOS"
+
+  - name: change e-mail address for admin
+    tags: apache, apache2,httpd
+    lineinfile:
+      path: /etc/http/conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin  hamid@unimatel.ma
+    when: ansible_distribution == "CentOS"
+    register: httpd
+
+  - name: restart httpd (CentOS)
+    tags: apache, httpd,centos
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed
 
   - name: copy default html file for site
     tags: apache2,httpd,copie
