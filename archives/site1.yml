@@ -2,32 +2,7 @@
 
 - hosts: all
   become: true
-  pre_tasks:
-
-  - name: update repo  (CentOS)
-    tags: always
-    dnf:
-      update_cahe: yes
-    changed_when: false
-    when: ansible_distribution == "CentOS"
-
-  - name: update repo  (Ubuntu)
-    tags: always
-    apt:
-      update_cache: yes
-    changed_when: false
-    when: ansible_distribution == "Ubuntu"
-  
-- hosts: all
-  become: true
   tasks:
-
-  - name: add ssh keey for simone
-    tags: always
-    authorized_key:
-      user: simone
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCbJVBirWxtW19TXPNX8K5kQGVIsETJhV5LJ6VtvQwI ansible2"
-
 
 - hosts: web_servers
   become: true
@@ -47,7 +22,7 @@
 
   - name: install apache and php for Centos servers
     tags: httpd,centos
-    dnf:
+    apt:
       name: 
         - httpd
         - php
